@@ -2,7 +2,7 @@
 
 const form = document.querySelector("section form");
 const input = document.querySelector("section form input");
-const msg = document.querySelector("section .feedback p");
+const msg = document.querySelector("section .feedback ");
 const profiles = document.querySelector("section .profiles");
 const language = document.querySelector(".language");
 const trash = document.querySelector(".trash");
@@ -10,9 +10,9 @@ const trash = document.querySelector(".trash");
 form.addEventListener("submit", (e) => {
   e.preventDefault();
   if (input.value === "") {
-    // msg.style.display = "flex";
+    msg.style.display = "flex";
     msg.innerText = `Please enter a valid username`;
-    // timer(5000);
+    timer(5000);
     return;
   }
   getUserData();
@@ -32,33 +32,37 @@ const getUserData = async () => {
       public_repos,
       followers,
     } = response.data;
-    console.log(response);
-    // console.log(url);
 
-    const profileNames = profiles.querySelectorAll("h2");
+    const profileNames = profiles.querySelectorAll(".card-container");
     const profileNamesArray = Array.from(profileNames);
-    // if (profileNamesArray.length > 0) {
-    //   const filteredArray = profileNamesArray.filter(
-    //     (profileCard) => profileCard.querySelector("h2").innerText == name
-    //   );
-    //   if (filteredArray.length > 0) {
-    //     msg.style.display = "flex";
-    //     msg.innerText = `You already searched the ${name}, Please search for profile`;
-    //     // ! hata mesajının 5 saniye sonra ekrandan kaybolması için setTimeout fonk. çağırdık
-    //     // timer(5000);
+    if (profileNamesArray.length > 0) {
+      const filteredArray = profileNamesArray.filter(
+        (profileCard) => profileCard.querySelector(" h2").innerText == name
+      );
 
-    //     return;
-    //   }
-    // }
+      console.log(filteredArray);
+      if (filteredArray.length > 0) {
+        msg.style.display = "flex";
+        msg.innerText = `You already searched the ${name}, Please search for another profile`;
+        // ! hata mesajının 5 saniye sonra ekrandan kaybolması için setTimeout fonk. çağırdık
+        timer(5000);
+        return;
+      } else if (profiles.children.length > 3) {
+        msg.style.display = "flex";
+        msg.innerText = `You can only check for 4 profiles`;
+        timer(5000);
+        return;
+      }
+    }
 
     const cardDiv = document.createElement("div");
     cardDiv.classList.add("card-container");
     const cardDivInnerHTML = `
-    <span class="pro">PRO</span>
+    <span class="pro">Github</span>
         <img class="round" src="${avatar_url}" alt="user" />
-          <h2>${name}</h2>
-            <h5>${location}</h5>
-              <p>${bio}</p>
+          <h2 class="name" ><span>${name}</span></h2>
+          <h5 class="location">${location}</h5>
+              
                 <div class="buttons">
                 <button class="primary">
                 <a href="${html_url}">Visit Profile</a>
@@ -66,11 +70,11 @@ const getUserData = async () => {
                 </div>
                 <div class="infos">
                  <div class="repos">
-                    <h3>Public Repos</h3>
+                    <h4>Public Repos</h4>
                     <p>${public_repos}</p>
                   </div>
                   <div class="followers">
-                     <h3>Followers</h3>
+                     <h4>Followers</h4>
                      <p>${followers}</p>
                   
                 </div>
@@ -78,12 +82,33 @@ const getUserData = async () => {
     `;
     cardDiv.innerHTML = cardDivInnerHTML;
     profiles.prepend(cardDiv);
-    console.log(cardDiv);
+    // console.log(cardDiv);
   } catch (error) {
-    msg.innerText(error);
+    if ((error = 404)) {
+      msg.style.display = "flex";
+      msg.innerText = `We can't find the ${inputVal}'s profile`;
+      timer(5000);
+      // return;
+    } else {
+      msg.innerText = error;
+      timer(5000);
+    }
   }
 
   form.reset();
 };
+
+function timer(time) {
+  setTimeout(() => {
+    msg.innerText = "";
+    msg.style.display = "none";
+  }, time);
+  form.reset();
+}
+
+trash.addEventListener("click", (e) => {
+  profiles.innerHTML = "";
+  e.preventDefault();
+});
 
 // getUserData();
