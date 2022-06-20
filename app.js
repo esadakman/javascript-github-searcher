@@ -33,7 +33,7 @@ const getUserData = async () => {
       followers,
       login,
     } = response.data;
-    console.log(response);
+//     console.log(response);
 
     const profileNames = profiles.querySelectorAll(".card-container");
     const profileNamesArray = Array.from(profileNames);
