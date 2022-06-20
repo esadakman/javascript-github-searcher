@@ -28,31 +28,43 @@ const getUserData = async () => {
       name,
       html_url,
       location,
-      bio,
+
       public_repos,
       followers,
+      login,
     } = response.data;
+    console.log(response);
 
     const profileNames = profiles.querySelectorAll(".card-container");
     const profileNamesArray = Array.from(profileNames);
+    if (!name || !location) {
+      msg.style.display = "flex";
+      msg.innerText = `${login} not specified his informations!`;
+      timer(5000);
+
+      // return;
+    }
     if (profileNamesArray.length > 0) {
       const filteredArray = profileNamesArray.filter(
         (profileCard) => profileCard.querySelector(" h2").innerText == name
       );
-
-      console.log(filteredArray);
+      // console.log(filteredArray);
       if (filteredArray.length > 0) {
         msg.style.display = "flex";
         msg.innerText = `You already searched the ${name}, Please search for another profile`;
         // ! hata mesajının 5 saniye sonra ekrandan kaybolması için setTimeout fonk. çağırdık
         timer(5000);
         return;
-      } else if (profiles.children.length > 3) {
+      } else if (profiles.children.length > 5) {
         msg.style.display = "flex";
-        msg.innerText = `You can only check for 4 profiles`;
+        msg.innerText = `You can only check for 6 profiles`;
         timer(5000);
+        let hr = document.createElement("hr");
+        document.querySelector(".container").appendChild(hr);
         return;
-      }
+      } //else if (!name) {
+      //   console.log(nullllll);
+      // }
     }
 
     const cardDiv = document.createElement("div");
@@ -64,9 +76,8 @@ const getUserData = async () => {
           <h5 class="location">${location}</h5>
               
                 <div class="buttons">
-                <button class="primary">
-                <a href="${html_url}">Visit Profile</a>
-                </button>
+                <a href="${html_url}" target="_blank">Visit Profile</a>
+                
                 </div>
                 <div class="infos">
                  <div class="repos">

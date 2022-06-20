@@ -15,7 +15,10 @@ section {
     align-items: center;
     flex-direction: column;
 
+
 }
+
+
 
 
 /* ! =========== Input Area ================= */
@@ -79,18 +82,43 @@ input.search-bar {
 
 .feedback-container {
     height: 5rem;
+    display: flex;
+    /* justify-content: center; */
+    align-items: center;
 }
 
 .feedback {
-    margin: 1rem;
+    /* margin: 2rem; */
     font-family: 'Roboto Mono', monospace;
-    padding: 0 2rem;
-    border: 2px solid white;
+    padding: .5rem 2rem;
+    border: 2px solid red;
     border-radius: 2rem;
     color: white;
     display: none;
-    align-items: center;
+
 }
+
+.title h1 {
+    margin: 1rem;
+
+}
+
+.title {
+    animation: color-change 10s linear infinite;
+}
+
+@keyframes color-change {
+
+    0% {
+        filter: hue-rotate(0deg)
+    }
+
+    100% {
+        filter: hue-rotate(360deg)
+    }
+}
+
+/* .rainbow{ } */
 
 /* ! profile cards */
 
@@ -99,7 +127,7 @@ input.search-bar {
     flex-direction: row;
     align-items: center;
     justify-content: center;
-    width: 80vw;
+    width: 90vw;
     flex-wrap: wrap;
     gap: 2rem;
 }
@@ -112,7 +140,7 @@ input.search-bar {
     border-radius: 5px;
     text-align: center;
     position: relative;
-    width: 22rem;
+    width: 19rem;
     /* height: 25rem; */
     max-height: 25rem;
     overflow: hidden;
@@ -132,8 +160,8 @@ input.search-bar {
     font-weight: bold;
     padding: 3px 7px;
     position: absolute;
-    top: 30px;
-    left: 30px;
+    top: 1.3rem;
+    left: 1.6rem;
 }
 
 .card-container .round {
@@ -159,33 +187,29 @@ input.search-bar {
     margin-top: 10px;
 }
 
-button.primary {
+
+a {
     background-color: #03BFCB;
     border: 1px solid #03BFCB;
-    border-radius: 3px;
+    border-radius: 5px;
     color: #231E39;
-    font-family: Montserrat, sans-serif;
-    font-weight: 500;
-    padding: 5px 10px;
-}
-
-.primary a {
     text-decoration: none;
-    color: #231E39;
-    font-weight: 800;
+    padding: 5px 10px;
+    font-weight: 900;
+
+    transition: all .5s linear;
 }
 
-/* button.primary:hover {
-    color: white;
-    background: #231E39;
-} */
-
-
+.buttons a:hover {
+    color: #03BFCB;
+    background-color: #090325;
+    /* background-color: white; */
+    /* font-weight: 800; */
+}
 
 .infos {
     background-color: #1F1A36;
     text-align: left;
-    padding: .5rem;
     margin-top: 1rem;
     display: flex;
     justify-content: space-around;
@@ -197,11 +221,17 @@ button.primary {
 }
 
 
+.infos h4,
+.infos p {
+    margin: 1rem;
 
-/* @media screen and (max-width: 800px) {
+}
+
+
+@media screen and (max-width: 800px) {
     .searcher {
-
         width: fit-content;
+        min-width: 19rem;
     }
 
     input.search-bar {
@@ -213,4 +243,8 @@ button.primary {
 
     }
 
-} */
+    .card-container {
+        min-width: 18rem;
+    }
+
+}
