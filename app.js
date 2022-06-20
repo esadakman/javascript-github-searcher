@@ -92,7 +92,8 @@ const getUserData = async () => {
     
     `;
     cardDiv.innerHTML = cardDivInnerHTML;
-    profiles.prepend(cardDiv);
+//     profiles.prepend(cardDiv);
+ profiles.append(cardDiv);
     // console.log(cardDiv);
   } catch (error) {
     if ((error = 404)) {
