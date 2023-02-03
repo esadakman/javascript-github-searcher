@@ -9,10 +9,9 @@ const trash = document.querySelector(".trash");
 
 form.addEventListener("submit", (e) => {
   e.preventDefault();
-  if (input.value === "") {
-    msg.style.display = "flex";
-    msg.innerText = `Please enter a valid username`;
-    timer(5000);
+  if (input.value.trim() === "") {
+    alertify(`Please enter a valid username`);
+    form.reset();
     return;
   }
   getUserData();
@@ -28,20 +27,15 @@ const getUserData = async () => {
       name,
       html_url,
       location,
-
       public_repos,
       followers,
       login,
     } = response.data;
-//     console.log(response);
 
     const profileNames = profiles.querySelectorAll(".card-container");
     const profileNamesArray = Array.from(profileNames);
     if (!name || !location) {
-      msg.style.display = "flex";
-      msg.innerText = `${login} not specified his informations!`;
-      timer(5000);
-
+      alertify(`${login} not specified his informations!`);
       // return;
     }
     if (profileNamesArray.length > 0) {
@@ -50,15 +44,13 @@ const getUserData = async () => {
       );
       // console.log(filteredArray);
       if (filteredArray.length > 0) {
-        msg.style.display = "flex";
-        msg.innerText = `You already searched the ${name}, Please search for another profile`;
         // ! hata mesajının 5 saniye sonra ekrandan kaybolması için setTimeout fonk. çağırdık
-        timer(5000);
+        alertify(
+          `You already searched the ${name}, Please search for another profile`
+        );
         return;
       } else if (profiles.children.length > 5) {
-        msg.style.display = "flex";
-        msg.innerText = `You can only check for 6 profiles`;
-        timer(5000);
+        alertify(`You can only check for 6 profiles`);
         let hr = document.createElement("hr");
         document.querySelector(".container").appendChild(hr);
         return;
@@ -92,35 +84,33 @@ const getUserData = async () => {
     
     `;
     cardDiv.innerHTML = cardDivInnerHTML;
-//     profiles.prepend(cardDiv);
- profiles.append(cardDiv);
-    // console.log(cardDiv);
+    profiles.append(cardDiv);
   } catch (error) {
     if ((error = 404)) {
-      msg.style.display = "flex";
-      msg.innerText = `We can't find the ${inputVal}'s profile`;
-      timer(5000);
+      alertify(`We can't find the ${inputVal}'s profile`);
       // return;
     } else {
       msg.innerText = error;
-      timer(5000);
+      alertify(error);
     }
   }
 
   form.reset();
 };
 
-function timer(time) {
-  setTimeout(() => {
-    msg.innerText = "";
-    msg.style.display = "none";
-  }, time);
-  form.reset();
-}
-
-trash.addEventListener("click", (e) => {
-  profiles.innerHTML = "";
-  e.preventDefault();
+trash.addEventListener("click", () => {
+  if (profiles.children.length > 0) {
+    profiles.innerHTML = "";
+  } else {
+    console.log("asd");
+    alertify("Start searching before deletion");
+  }
 });
 
-// getUserData();
+function alertify(msgs) {
+  msg.innerText = msgs;
+  msg.style.display = "flex";
+  setTimeout(() => {
+    msg.style.display = "none";
+  }, 2000);
+}
